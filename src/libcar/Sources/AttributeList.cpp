@@ -7,6 +7,7 @@
  */
 
 #include <car/AttributeList.h>
+#include <cstdio>
 
 using car::AttributeList;
 

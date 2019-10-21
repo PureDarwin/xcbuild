@@ -48,7 +48,6 @@ inherit(FileType::shared_ptr const &b)
     auto base = this->base();
 
     _uti                                     = Inherit::Override(_uti, base->_uti);
-    _extensions                              = _extensions; /* Explicitly not inherited. */
     _mimeTypes                               = Inherit::Combine(_mimeTypes, base->_mimeTypes);
     _typeCodes                               = Inherit::Combine(_typeCodes, base->_typeCodes);
     _filenamePatterns                        = Inherit::Combine(_filenamePatterns, base->_filenamePatterns);

@@ -124,7 +124,7 @@ currentDirectory() const
     return *directory;
 }
 
-#if defined(__linux__)
+#if defined(__linux__) || defined(__FreeBSD__)
 static char initialWorkingDirectory[PATH_MAX] = { 0 };
 __attribute__((constructor))
 static void InitializeInitialWorkingDirectory()
@@ -134,7 +134,7 @@ static void InitializeInitialWorkingDirectory()
     }
 }
 
-#if !(__GLIBC__ >= 2 && __GLIBC_MINOR__ >= 16)
+#if defined(__FreeBSD__) || !(__GLIBC__ >= 2 && __GLIBC_MINOR__ >= 16)
 static char initialExecutablePath[PATH_MAX] = { 0 };
 __attribute__((constructor))
 static void InitialExecutablePathInitialize(int argc, char **argv)
@@ -183,7 +183,7 @@ executablePath() const
             abort();
         }
 #elif defined(__linux__)
-#if __GLIBC__ >= 2 && __GLIBC_MINOR__ >= 16
+#if __GLIBC__ >= 2 && __GLIBC_MINOR__ >= 16)
         char const *path = reinterpret_cast<char const *>(getauxval(AT_EXECFN));
         if (path == NULL) {
             abort();
@@ -193,6 +193,9 @@ executablePath() const
 #else
 #error Requires glibc on Linux.
 #endif
+        absolutePath = FSUtil::ResolveRelativePath(std::string(path), std::string(initialWorkingDirectory));
+#elif defined(__FreeBSD__)
+        char const *path = reinterpret_cast<char const *>(initialExecutablePath);
         absolutePath = FSUtil::ResolveRelativePath(std::string(path), std::string(initialWorkingDirectory));
 #else
 #error Unsupported platform.
@@ -204,11 +207,11 @@ executablePath() const
     return *executablePath;
 }
 
-#if defined(__APPLE__) || defined(__linux__)
+#if defined(__APPLE__) || defined(__linux__) || defined(__FreeBSD__)
 static int commandLineArgumentCount = 0;
 static char **commandLineArgumentValues = NULL;
 
-#if defined(__APPLE__)
+#if defined(__APPLE__) || defined(__FreeBSD__)
 __attribute__((constructor))
 #endif
 static void CommandLineArgumentsInitialize(int argc, char **argv)
@@ -246,7 +249,7 @@ commandLineArguments() const
         arguments = new std::vector<std::string>(args);
 
         LocalFree(commandLineArgumentValues);
-#elif defined(__APPLE__) || defined(__linux__)
+#elif defined(__APPLE__) || defined(__linux__) || defined(__FreeBSD__)
         arguments = new std::vector<std::string>(commandLineArgumentValues + 1, commandLineArgumentValues + commandLineArgumentCount);
 #else
 #error Unsupported platform.

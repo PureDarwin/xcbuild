@@ -94,6 +94,7 @@ if (BUILD_TESTING)
   endfunction ()
 endif ()
 
+add_compile_options(-Wno-delete-non-virtual-dtor)
 set(YAML_CPP_BUILD_TESTS FALSE)
 set(YAML_CPP_BUILD_TOOLS FALSE)
 add_subdirectory(ThirdParty/yaml-cpp)

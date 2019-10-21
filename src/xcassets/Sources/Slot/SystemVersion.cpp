@@ -10,6 +10,17 @@
 
 #include <sstream>
 
+/*
+ * for legacy reasons, the GNU C Library might define major & minor,
+ * breaking the compilation unless we undefine them.
+ */
+#ifdef major
+# undef major
+#endif
+#ifdef minor
+# undef minor
+#endif
+
 using xcassets::Slot::SystemVersion;
 
 SystemVersion::
