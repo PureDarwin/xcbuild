@@ -65,7 +65,7 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR
         "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR
         "${CMAKE_C_COMPILER_ID}" STREQUAL "Clang" OR
         "${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
-  add_compile_options(-Wall -Werror -Wmissing-declarations
+  add_compile_options(-Wall -Wmissing-declarations
       $<$<COMPILE_LANGUAGE:C>:-Wmissing-prototypes>
       #Until we add explicit prototypes/declarations for definitions which
       #themselves provide a prototype, treating these warnings as errors will
