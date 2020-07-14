@@ -21,7 +21,7 @@ namespace libutil {
 static inline std::string &ltrim(std::string &s)
 {
     s.erase(s.begin(), std::find_if(s.begin(), s.end(),
-                std::not1(std::not_fn<int, int>(::isspace))));
+                std::not1(std::not_fn(::isspace))));
     return s;
 }
 
@@ -29,7 +29,7 @@ static inline std::string &ltrim(std::string &s)
 static inline std::string &rtrim(std::string &s)
 {
     s.erase(std::find_if(s.rbegin(), s.rend(),
-                std::not1(std::not_fn<int, int>(::isspace))).base(),
+                std::not1(std::not_fn(::isspace))).base(),
             s.end());
     return s;
 }
