@@ -61,9 +61,19 @@ endif ()
 # Enable all warnings.
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC" OR "${CMAKE_CXX_SIMULATE_ID}" STREQUAL "MSVC")
   add_compile_options(/D_CRT_SECURE_NO_WARNINGS) # TODO: /Wall /WX
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-  add_compile_options(-Wall -Werror)
-  add_compile_options(-Wno-delete-non-virtual-dtor)
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR
+        "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR
+        "${CMAKE_C_COMPILER_ID}" STREQUAL "Clang" OR
+        "${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
+  add_compile_options(-Wall -Werror -Wmissing-declarations
+      $<$<COMPILE_LANGUAGE:C>:-Wmissing-prototypes>
+      #Until we add explicit prototypes/declarations for definitions which
+      #themselves provide a prototype, treating these warnings as errors will
+      #break builds.
+      #Once prototypes and declarations are added please remove the following
+      # -Wno-error options.
+      -Wno-error=missing-declarations
+      $<$<COMPILE_LANGUAGE:C>:-Wno-error=missing-prototypes>)
   if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     add_compile_options(-Wno-multichar -Wno-sign-compare)
   endif ()
@@ -76,6 +86,16 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" AND NOT "${CMAKE_CXX_SIMULATE_ID
   add_compile_options(-fcolor-diagnostics)
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND "${CMAKE_CXX_COMPILER_VERSION}" VERSION_GREATER "5.0")
   add_compile_options(-fdiagnostics-color)
+endif ()
+
+# Port BSD gcc
+if ("${CMAKE_SYSTEM_NAME}" MATCHES "FreeBSD|OpenBSD")
+  if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+    add_compile_options(-D_GLIBCXX_USE_C99 -D_GLIBCXX_USE_C99_MATH -D_GLIBCXX_USE_C99_MATH_TR1 -D_GLIBCXX_USE_CXX11_ABI=1)
+  endif ()
+  if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND "${CMAKE_CXX_COMPILER_VERSION}" VERSION_GREATER "5.0")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lstdc++")
+  endif ()
 endif ()
 
 # Enable unit testing.
