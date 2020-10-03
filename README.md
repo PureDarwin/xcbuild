@@ -74,7 +74,7 @@ On Windows you can install those tools with [Chocolatey](https://chocolatey.org)
 #### All platforms
 
 ```sh
-git clone --depth=1 https://github.com/facebook/xcbuild
+git clone --depth=1 https://github.com/PureDarwin/xcbuild
 cd xcbuild
 git submodule update --init
 ```
