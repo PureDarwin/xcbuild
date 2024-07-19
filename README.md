@@ -4,7 +4,7 @@
   xcbuild
 </h1>
 
-**xcbuild** is an Xcode-compatible build tool with the goal of providing faster builds, better documentation of the build process and running on multiple platforms (macOS, Linux, and Windows)
+**xcbuild** is an Xcode-compatible build tool with the goal of providing faster builds, better documentation of the build process and running on multiple platforms (macOS, PureDarwin, Linux, and Windows)
 
 ### Why xcbuild?
 
