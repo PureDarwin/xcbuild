@@ -33,8 +33,6 @@ xcbuild and [xctool](https://github.com/facebook/xctool) are both Xcode-compatib
 
 ## Building xcbuild
 
-[![Build Status](https://travis-ci.org/facebook/xcbuild.svg?branch=master)](https://travis-ci.org/facebook/xcbuild)
-
 ### Requirements
 
 #### All platforms
@@ -66,6 +64,9 @@ On Windows you can install those tools with [Chocolatey](https://chocolatey.org)
 #### macOS
 - Xcode 7 or later.
 
+#### PureDarwin
+- PureDarwin Toolchain(Coming soon)
+
 #### Windows 
 - Visual Studio 2015 or later, on Windows. A `zlib` DLL is also required.
 
@@ -78,7 +79,7 @@ git clone --depth=1 https://github.com/PureDarwin/xcbuild
 cd xcbuild
 git submodule update --init
 ```
-#### Linux and macOS:
+#### Linux and macOS and PureDarwin:
 
 ```sh
 make
